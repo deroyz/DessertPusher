@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
 
     private var revenue = 0
     private var dessertsSold = 0
+   private lateinit var dessertTimer: DessertTimer
 
     // Contains all the views
     private lateinit var binding: ActivityMainBinding
@@ -75,12 +76,15 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             onDessertClicked()
         }
 
+        dessertTimer = DessertTimer()
+
         // Set the TextViews to the right values
         binding.revenue = revenue
         binding.amountSold = dessertsSold
 
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
+
     }
 
     /**
@@ -114,7 +118,6 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
             // than the amount sold.
             else break
         }
-
         // If the new dessert is actually different than the current dessert, update the image
         if (newDessert != currentDessert) {
             currentDessert = newDessert
@@ -151,6 +154,7 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     }
 
     override fun onStart() {
+        dessertTimer.startTimer()
         super.onStart()
         Timber.i("onStart Called")
     }
@@ -158,24 +162,21 @@ class MainActivity : AppCompatActivity(), LifecycleObserver {
     override fun onResume() {
         super.onResume()
         Timber.i("onResume Called")
-
     }
 
     override fun onPause() {
         super.onPause()
         Timber.i("onPause Called")
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Timber.i("onDestroy Called")
-
     }
 
     override fun onStop() {
         super.onStop()
         Timber.i("onStop Called")
-
+        dessertTimer.stopTimer()
     }
 }
